@@ -21,13 +21,22 @@ const Login = () => {
   let [searchParams] = useSearchParams();
   const longLink = searchParams.get("createNew");
 
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const navigate = useNavigate();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const { loading, error, fn: fnLogin, data } = useFetch(login, formData);
   const { fetchUser } = UrlState();
 
@@ -38,14 +47,6 @@ const Login = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, data]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
   const handleLogin = async () => {
     setErrors([]);
